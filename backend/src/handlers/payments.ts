@@ -64,7 +64,8 @@ export default function mountPaymentsEndpoints(router: Router) {
 
     await orderCollection.insertOne({
       pi_payment_id: paymentId,
-      product_id: currentPayment.data.metadata.productId,
+      order_id: currentPayment.data.metadata.orderId,
+      time_id: currentPayment.data.metadata.timeId,
       user: req.session.currentUser.uid,
       txid: null,
       paid: false,
@@ -111,5 +112,38 @@ export default function mountPaymentsEndpoints(router: Router) {
 
     await orderCollection.updateOne({ pi_payment_id: paymentId }, { $set: { cancelled: true } });
     return res.status(200).json({ message: `Cancelled the payment ${paymentId}` });
+  })
+
+  router.get('/order', async (req, res) => {
+    const { time_id } = req.query
+    const app = req.app;
+    const orderCollection = app.locals.orderCollection;
+    try {
+      await orderCollection.findOne(
+        {},
+        { sort: { _id: -1 } },
+        (err: any, data: any) => {
+          if(data.time_id == time_id) {
+            return res.status(200).json({
+              message: `Order found!`,
+              status: 200,
+              data: data,
+            })
+          }
+          res.status(404).json({
+            message: `Order not found!`,
+            status: 404,
+            error: err,
+          })
+        },
+      );
+    } catch (error) {
+      return res.status(404).json({
+        message: `Something is wrong!`,
+        status: 404,
+        error: error,
+      })
+    }
+
   })
 }

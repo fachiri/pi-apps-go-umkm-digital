@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-console.log("NODE_ENV: " + process.env.NODE_ENV);
+// console.log("NODE_ENV: " + process.env.NODE_ENV);
 
 const result = dotenv.config()
 

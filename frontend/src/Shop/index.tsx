@@ -58,8 +58,11 @@ export default function Shop() {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const signIn = async () => {
+    console.log(`test1`)
     const scopes = ['username', 'payments'];
     const authResult: AuthResult = await window.Pi.authenticate(scopes, onIncompletePaymentFound);
+    console.log(`test2`)
+    console.log(authResult)
     signInUser(authResult);
     setUser(authResult.user);
   }
