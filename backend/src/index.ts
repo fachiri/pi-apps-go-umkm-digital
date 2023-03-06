@@ -78,20 +78,24 @@ app.use(session({
 // II. Mount app endpoints:
 //
 
+
+
 // Payments endpoint under /payments:
 const paymentsRouter = express.Router();
 mountPaymentsEndpoints(paymentsRouter);
-app.use('/payments', paymentsRouter);
+app.use('/pi/payments', paymentsRouter);
 
 // User endpoints (e.g signin, signout) under /user:
 const userRouter = express.Router();
 mountUserEndpoints(userRouter);
-app.use('/user', userRouter);
+app.use('/pi/user', userRouter);
 
 // Hello World page to check everything works:
-app.get('/', async (_, res) => {
+app.get('/pi', async (_, res) => {
   res.status(200).send({ message: "Hello, World!" });
 });
+
+
 
 // setup websocket
 const server = http.createServer();
